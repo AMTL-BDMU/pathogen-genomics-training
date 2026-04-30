@@ -103,7 +103,7 @@ Each module will contain:
 To download material for module-01-linux:
 ```
 cd ~
-wget --no-check-certificate https://zenodo.org/records/19886065/files/module-01-linux.zip
+wget --no-check-certificate https://zenodo.org/records/19903856/files/module-01-linux.zip
 unzip module-01-linux.zip
 ```
 If unzip doesn't work or is not yet installed:
