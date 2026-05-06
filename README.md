@@ -316,7 +316,6 @@ You're officially beyond the slides 🚀
 ## 🌍 Partner Institutions
 
 <p align="center">
-  <img src="images/global_fund.png" height="80">
   <img src="images/mekong_institute.png" height="80">
   <img src="images/rphl_logo.png" height="80">
   <img src="images/dmsc.png" height="80">
