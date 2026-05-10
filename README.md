@@ -315,11 +315,11 @@ You're officially beyond the slides 🚀
 
 ## 🌍 Partner Institutions
 
-<p align="center">
-  <img src="images/rphl_logo.png" height="80">
-  <img src="images/dmsc.png" height="80">
-  <img src="images/doh.png" height="80">
-  <img src="images/ritm.png" height="80">
+<p align="left">
+  <img src="images/rphl_logo.png" height="100">
+  <img src="images/dmsc.png" height="100">
+  <img src="images/doh.png" height="100">
+  <img src="images/ritm.png" height="100">
 </p>
 
 
