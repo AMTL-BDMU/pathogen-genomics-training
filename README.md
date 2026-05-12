@@ -313,6 +313,17 @@ You're officially beyond the slides 🚀
 
 ---
 
+## BONUS 
+
+If you want to perform bioinformatics analysis on your own local computer using miniconda:
+
+| 🪟 Windows | [Install WSL-Ubuntu](https://documentation.ubuntu.com/wsl/stable/howto/install-ubuntu-wsl2/) | [Install miniconda -- follow linux installation](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) |
+
+| 🍎 Mac | [Use your terminal](https://www.anaconda.com/docs/getting-started/miniconda/install/mac-cli-install) |
+
+
+---
+
 ## 🌍 Partner Institutions
 
 <p align="left">
