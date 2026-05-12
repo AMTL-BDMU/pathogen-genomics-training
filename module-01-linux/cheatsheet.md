@@ -1,0 +1,338 @@
+# 🧬 BDMU Linux Survival Guide
+### *Module 01 — Basic Linux Command Line*
+
+```bash
+$ whoami
+bdmu_user
+
+$ pwd
+/home/i-have-no-idea-what-im-doing
+```
+
+Welcome to the official-ish Linux cheatsheet of the **Bioinformatics and Data Management Unit (BDMU)** — where pipelines are long, storage is never enough, and one wrong command can ruin your entire afternoon.
+
+This guide exists to help you survive Linux, impress colleagues, debug at 3 AM, and avoid accidentally deleting your project folder.
+
+---
+
+## 🧭 Navigation
+
+```bash
+pwd              # "Where am I?"
+cd <folder>      # enter folder
+cd ..            # go back one level
+cd ~             # retreat to home
+ls               # list files
+ls -lah          # list files with ✨details✨
+tree             # visualize directory chaos
+clear            # emotionally reset the terminal
+```
+
+**Example:**
+```bash
+$ pwd
+/home/username
+
+$ ls
+file1.txt  file2.txt  results/  reference.fasta
+```
+> "Ah yes, files I definitely organized properly."
+
+---
+
+## 📁 File Operations
+
+```bash
+touch <file>           # create empty file
+mkdir <folder>         # create directory
+cp <src> <dest>        # copy file
+mv <old> <new>         # rename or move file
+rm <file>              # delete file
+rm -r <folder>         # delete folder recursively
+```
+
+> ⚠️ `rm -rf` increases heart rate by approximately 300%.
+
+> 🚨 **Never, ever, ever, EVER run `rm -rf *`** — it will delete everything in your current directory. Instantly. Permanently. No confirmation. No undo. No mercy.
+
+**Example:**
+```bash
+# Creating a folder — silent on success, verify with ls
+$ mkdir results
+$ ls
+results/
+
+# If the folder already exists:
+$ mkdir results
+mkdir: cannot create directory 'results': File exists
+
+
+# Renaming a file — silent on success, verify with ls
+$ mv draft.txt draft_v1.txt
+$ ls
+draft_v1.txt
+
+# If the file doesn't exist:
+$ mv ghost.txt ghost_v1.txt
+mv: cannot stat 'ghost.txt': No such file or directory
+
+
+# Deleting a file — silent on success, gone forever
+$ rm temp.txt
+$ ls
+(temp.txt no longer appears)
+
+# If the file doesn't exist:
+$ rm ghost.txt
+rm: cannot remove 'ghost.txt': No such file or directory
+```
+> Linux doesn't do compliments. Silence = success. Errors, however, it delivers with full confidence.
+
+---
+
+## 🔍 Viewing File Contents
+
+```bash
+cat <file>       # display entire file
+less <file>      # scroll through file (q to quit)
+head <file>      # first 10 lines
+tail <file>      # last 10 lines
+wc -l <file>     # count lines
+```
+
+**Example** — given `data.txt` with multiple lines:
+```bash
+$ head data.txt
+line1_content
+line2_content
+line3_content
+...
+
+$ wc -l data.txt
+42 data.txt
+```
+> "42 lines — could be 42 samples, could be 42 problems. Probably both."
+
+---
+
+## 🔎 grep — Search Like a Detective
+
+```bash
+grep "<pattern>" <file>      # search for pattern
+grep -i "<pattern>" <file>   # case-insensitive search
+grep -c "<pattern>" <file>   # count matching lines
+```
+
+**Example** — given `pipeline.log` containing error messages:
+```bash
+$ grep "ERROR" pipeline.log
+[ERROR] Job failed at step 3
+[ERROR] Missing input file
+
+$ grep -c "ERROR" pipeline.log
+2
+```
+> Turning thousands of log lines into targeted disappointment.
+
+---
+
+## 🧮 awk & cut — Column Extraction
+
+```bash
+awk '{print $1}' <file>       # print first column (space-delimited)
+awk '{print $1,$3}' <file>    # print columns 1 and 3
+cut -f1 <file.tsv>            # cut first tab-delimited column
+cut -f1,3 <file.tsv>          # cut columns 1 and 3
+```
+
+**Example** — given `samples.txt`:
+```
+sampleA   groupX   passed
+sampleB   groupY   failed
+sampleC   groupX   passed
+```
+
+```bash
+$ awk '{print $1}' samples.txt
+sampleA
+sampleB
+sampleC
+
+$ awk '{print $1,$3}' samples.txt
+sampleA passed
+sampleB failed
+sampleC passed
+```
+> Nobody understands `awk` at first. Then suddenly you use it every day.
+
+---
+
+## 🔄 sort & uniq
+
+```bash
+sort <file>              # sort lines alphabetically
+sort <file> | uniq       # sort and remove duplicates
+sort <file> | uniq -c    # count occurrences of each unique line
+```
+
+**Example** — given `tags.txt`:
+```
+groupX
+groupY
+groupX
+groupZ
+groupY
+```
+
+```bash
+$ sort tags.txt | uniq
+groupX
+groupY
+groupZ
+
+$ sort tags.txt | uniq -c
+      2 groupX
+      2 groupY
+      1 groupZ
+```
+> "Cleaning biological chaos one line at a time."
+
+---
+
+## 🌟 Wildcards & Pipes
+
+```bash
+ls *.<ext>           # list files matching pattern
+cmd > output.txt     # write output to file (overwrites)
+cmd >> output.txt    # append output to file
+cmd1 | cmd2          # pipe output of cmd1 into cmd2
+```
+
+**Example:**
+
+List all `.fastq.gz` files in the current directory:
+```bash
+$ ls *.fastq.gz
+sample01.fastq.gz  sample02.fastq.gz  sample03.fastq.gz
+```
+
+Given `pathogens.txt`:
+```
+RSV
+Influenza
+RSV
+Mpox
+Influenza
+RSV
+```
+```bash
+$ cat pathogens.txt | sort | uniq
+Influenza
+Mpox
+RSV
+```
+
+Given `qc_results.txt`:
+```
+sample01  RSV       passed
+sample02  Influenza failed
+sample03  Mpox      passed
+sample04  RSV       failed
+sample05  Influenza passed
+```
+```bash
+# Extract only samples that passed, save to a new file
+$ grep "passed" qc_results.txt | awk '{print $1}' > passed_samples.txt
+$ cat passed_samples.txt
+sample01
+sample03
+sample05
+```
+> Linux plumbing at its finest. Chain commands like a pipeline wizard.
+
+---
+
+## 🖥️ screen — Because SSH Disconnects Fear Your Progress
+
+Running a 12-hour pipeline when your WiFi says *"goodbye."* — that's what `screen` is for.
+
+```bash
+screen -S <name>    # start a named session
+screen -ls          # list active sessions
+screen -r <name>    # reattach to a session
+exit                # end the session
+```
+
+Detach without stopping: **`Ctrl + A`, then `D`**
+
+**Example:**
+```bash
+$ screen -S myanalysis
+
+$ screen -ls
+There is a screen on:
+    12345.myanalysis    (Detached)
+
+$ screen -r myanalysis
+(back inside the session)
+```
+
+---
+
+## 🔐 Permissions
+
+```bash
+chmod +x <script>    # make script executable
+chmod 755 <file>     # set rwxr-xr-x permissions
+sudo <command>       # run as superuser (use responsibly)
+```
+
+| Number | Permission |
+|--------|------------|
+| 4 | Read |
+| 2 | Write |
+| 1 | Execute |
+| 7 | Unlimited power |
+
+**Example:**
+```bash
+# Without permission:
+$ ./run_pipeline.sh
+bash: ./run_pipeline.sh: Permission denied
+
+# Grant execute permission — silent on success, verify with ls -l
+$ chmod +x run_pipeline.sh
+$ ls -l run_pipeline.sh
+-rwxr-xr-x 1 user group 1234 May 12 09:00 run_pipeline.sh
+
+# Now it runs:
+$ ./run_pipeline.sh
+Pipeline started...
+```
+
+---
+
+## 🏆 BDMU Field Notes
+
+- ✅ If the pipeline works — **do not update anything.**
+- ✅ If permissions fail — try `sudo` and pray responsibly.
+- ✅ If storage is full — everyone becomes a data hoarder.
+- ✅ If the server crashes — stare at `htop` dramatically.
+- ✅ If someone says *"quick analysis"* — prepare snacks.
+- ✅ No output = success. Lots of output = prepare emotionally.
+
+---
+
+## ☕ Final Wisdom
+
+May your jobs finish successfully, your logs stay error-free, and your sequencing runs pass QC on the first try.
+
+```bash
+sudo apt install happiness
+
+E: Unable to locate package happiness
+```
+
+```bash
+echo "Good luck, researcher."
+```
